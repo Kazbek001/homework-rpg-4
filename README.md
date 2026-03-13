@@ -22,10 +22,10 @@ In this assignment, we designed a raid system that supports flexible skill-effec
 Diagrams illustrate the structural design of the system:
 
 ### Bridge Pattern Diagram
-![Bridge Diagram](Diagram/BridgeDiagram.png)
+![Bridge Diagram](Diagram/umldiagram.png)
 
 ### Composite Pattern Diagram
-![Composite Diagram](Diagram/CompositeDiagram.png)
+![Composite Diagram](Diagram/uml2.png)
 
 ---
 
