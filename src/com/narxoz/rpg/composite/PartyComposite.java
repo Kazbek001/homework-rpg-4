@@ -27,32 +27,42 @@ public class PartyComposite implements CombatNode {
 
     @Override
     public int getHealth() {
-        // TODO: Composite aggregation
-        // Return total health of all children (and nested children).
-        return 0;
+        // Барлық балалардың жалпы денсаулығын есептеу
+        int totalHealth = 0;
+        for (CombatNode child : children) {
+            totalHealth += child.getHealth();
+        }
+        return totalHealth;
     }
 
     @Override
     public int getAttackPower() {
-        // TODO: Composite aggregation
-        // Return total attack of alive children only.
-        return 0;
+        // Тек тірі балалардың шабуыл күшін қосу
+        int totalAttack = 0;
+        for (CombatNode child : getAliveChildren()) {
+            totalAttack += child.getAttackPower();
+        }
+        return totalAttack;
     }
 
     @Override
     public void takeDamage(int amount) {
-        // TODO: Composite distribution
-        // Distribute incoming damage across alive children.
-        // Suggested baseline:
-        // 1) Collect alive children
-        // 2) Split amount evenly (or using your own documented rule)
-        // 3) Apply damage to each child
+        List<CombatNode> alive = getAliveChildren();
+        if (alive.isEmpty()) return; // Ешкім тірі болмаса, урон алмайды
+
+        // Уронды барлық тірі мүшелерге теңдей бөліп береміз
+        int splitDamage = amount / alive.size();
+        for (CombatNode child : alive) {
+            child.takeDamage(splitDamage);
+        }
     }
 
     @Override
     public boolean isAlive() {
-        // TODO: Composite liveness
-        // Return true when at least one child is alive.
+        // Кем дегенде бір бала тірі болса, топ тірі саналады
+        for (CombatNode child : children) {
+            if (child.isAlive()) return true;
+        }
         return false;
     }
 
@@ -63,13 +73,21 @@ public class PartyComposite implements CombatNode {
 
     @Override
     public void printTree(String indent) {
-        // TODO: Tree visualization
-        // Print this node and recurse into children with increased indent.
-        System.out.println(indent + "+ " + name + " [TODO: compute HP/ATK]");
+        // Ағаш құрылымын әдемілеп шығару
+        System.out.println(indent + "+ " + name + " [HP: " + getHealth() + ", ATK: " + getAttackPower() + "]");
+        for (CombatNode child : children) {
+            child.printTree(indent + "  "); // Ішкі элементтерге шегініс (пробел) қосамыз
+        }
     }
 
     private List<CombatNode> getAliveChildren() {
-        // TODO: helper for takeDamage()
-        return new ArrayList<>();
+        // Тек тірі балаларды қайтаратын көмекші әдіс
+        List<CombatNode> aliveList = new ArrayList<>();
+        for (CombatNode child : children) {
+            if (child.isAlive()) {
+                aliveList.add(child);
+            }
+        }
+        return aliveList;
     }
 }
